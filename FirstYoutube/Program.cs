@@ -14,10 +14,10 @@ namespace FirstYoutube
 {
     class Program
     {
-        private static string customer_key = "4oRhSMKUB3d5Sd364CjrIQSOd";
-        private static string customer_key_secret = "sULa9DU1dD7Npym4DDQKLuILsmfPXQvfMjG8Qti5sN4pNzFtgr";
-        private static string access_token = "926157826342371329-z1HRWsNes6zSLvzMyUmvy3nB4Kg2qOd";
-        private static string access_token_secret = "2041mVPf7a4qU3aNKkWJmOYd1MaSr6EP7mu81TBLMPUbF";
+        private static string customer_key =                "";
+        private static string customer_key_secret =      "";
+        private static string access_token =             "";
+        private static string access_token_secret =      "";
 
         private static TwitterService service = new TwitterService(customer_key, customer_key_secret, access_token, access_token_secret);
         private static int currentImageID = 0;
