@@ -8,6 +8,7 @@ using TweetSharp;
 using System.Timers;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace FirstYoutube
 {
@@ -87,42 +88,18 @@ namespace FirstYoutube
             Auth.SetUserCredentials(customer_key, customer_key_secret, access_token, access_token_secret);
             var stream = Tweetinvi.Stream.CreateFilteredStream();
 
+
+            /* Training: What we are looking for */
+
             //stream.AddTrack("earthquake");
             //stream.AddTrack("Calif");
-            //stream.ContainsTrack("califearthquake");
-
-            // OR tweets containing both 'tweetinvi' AND 'rocks'.
-            //stream.AddTrack("tweetinvi rocks");
-
-            //Training: What we are looking for
-
-            //OR Search
-            stream.AddTrack("earthquake");// california");
-            //stream.AddTrack("earthquake california");// california");
-
-            //And Search - tweets containing both 'earthquake' AND 'southern' AND 'cal'.
-            //stream.AddTrack("earthquake cal");// california");
-
-            //test
-            //stream.AddTrack("csc 500 rocks");// california");
-            //stream.AddTrack("ysl");// california");
-            //stream.AddTrack("gucci");
-            //stream.AddTrack("lv");
-            //stream.AddTrack("new york times");
-
-            ////reply?
-            //var tweetIdtoReplyTo = arguments.Tweet.CreatedBy.Id; //1;//long twetid
-            //var tweetToReplyTo = Tweet.GetTweet(tweetIdtoReplyTo);            
-            //// We must add @screenName of the author of the tweet we want to reply to
-            //var textToPublish = string.Format("@{0} {1}", tweetToReplyTo.CreatedBy.ScreenName, text);
-            //var tweet = Tweet.PublishTweetInReplyTo(textToPublish, tweetIdtoReplyTo);
-            //Console.WriteLine("Publish success? {0}", tweet != null);
-            ////end replyto code
+            //stream.ContainsTrack("califearthquake");         
+            stream.AddTrack("csc 500 rocks");// california");
+            stream.AddTrack("earthquake");// california");            
 
             stream.AddTweetLanguageFilter(Tweetinvi.Models.LanguageFilter.English);
 
             Console.Write("I am listening to twitter stream:");
-            //Console.Write("Searching:  " +);
 
             stream.MatchingTweetReceived += (sender, arguments) =>
             {
@@ -130,6 +107,36 @@ namespace FirstYoutube
                 Console.WriteLine(arguments.Tweet.Text);
                 //Console.WriteLine(arguments.Tweet.CreatedBy.Id);
                 //Console.WriteLine(arguments.Tweet.CreatedBy.ScreenName);
+
+                /* Write to a text File
+                 * File Save Location: C:\drivers1\csc500-research-methods\project-code\test-SMPLE-output-text-3.txt
+                 */
+                try{
+                    //Pass the filepath and filename to the StreamWriter Constructor
+                    string path_to_save_textOutput = @"C:\drivers1\csc500-research-methods\project-code\data\carlos-data-output-training.csv";
+
+                    // This text is added only once to the file.
+                    if (!File.Exists(path_to_save_textOutput)){
+                        // Create a file to write to.
+                        using (StreamWriter sw = File.CreateText(path_to_save_textOutput)) {
+                            sw.WriteLine("**File Initialized**\n");
+                        }
+                    }
+
+                    StreamWriter sw2 = File.AppendText( path_to_save_textOutput );
+                    //Write a line of text
+                    sw2.WriteLine("");
+                    sw2.WriteLine("\n\n##NEWTWEET##");
+                    sw2.WriteLine(arguments.Tweet.Text);
+                    sw2.Close();
+                }
+                catch (Exception e){
+                    Console.WriteLine("Exception: " + e.Message);
+                }
+                finally{
+                    Console.WriteLine("Executing finally block.");
+                }
+                /* end write to file */
 
                 //reply?
                 var text = "Earthquake Verification: *INCONCLUSIVE*" + (DateTime.Now.ToString("yyyyMMddHHmmss"));
